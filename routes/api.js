@@ -12,17 +12,12 @@ const expect   = require('chai').expect;
 const PostHandler = require('../controllers/postHandler.js');
 
 module.exports = function (app) {
+  const postHandler = new PostHandler();
   
   app.route('/api/threads/:board')
-      .get(function(req,res){
-        
-      })
-      .post(function(req, res){
-        
-      })
-  
+      .get()
+      .post(postHandler.newPost)
       .put()
-  
       .delete();
     
   app.route('/api/replies/:board')
