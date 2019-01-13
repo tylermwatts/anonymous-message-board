@@ -31,7 +31,7 @@ module.exports = function (app) {
       .get(function(req,res){
         Post.find({board: req.params.board}).select('-_id -reported -delete_password -__v').exec((err,posts)=>{
           if (err) res.send(err);
-          res.send(posts) //Maybe?
+          
         })
       })
   
