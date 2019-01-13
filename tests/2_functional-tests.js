@@ -20,7 +20,7 @@ suite('Functional Tests', function() {
     suite('POST', function() {
       test('posting a new thread to board "Test"', function(done){
         chai.request(server)
-          .post('/api/threads/Test')
+          .post('/api/threads/test')
           .send({text: 'First test', delete_password: 'delete'})
           .end((err,res)=>{
             assert.equal(res.status, 200);
