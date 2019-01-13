@@ -29,8 +29,8 @@ module.exports = function (app) {
   
   app.route('/api/threads/:board')
       .get(function(req,res){
-        Post.find({board: req.params.board}, '-reported -delete_password', (err,posts)=>{
-          if (err) res.json({error: err});
+        Post.find({board: req.params.board}).select('-_id -reported -delete_password -__v').exec((err,posts)=>{
+          if (err) res.send(err);
           res.send(posts);
         })
       
@@ -38,7 +38,6 @@ module.exports = function (app) {
   
       .post(function(req, res){
         var hashedPw = bcrypt.hashSync(req.body.delete_password, 12);
-        console.log(hashedPw);
         let newPost = new Post({
           board: req.params.board,
           text: req.body.text,
