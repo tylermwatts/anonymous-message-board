@@ -38,8 +38,10 @@ function PostHandler(){
         .limit(10)
         .toArray((err,posts)=>{
           if (err) res.json({error: err})
-          posts.map(p=>{
-            p.replies > 3 ? p.replies.slice(-3) : p.replies
+          posts.forEach(post=>{
+            if (post.replies.length > 3){
+              post.replies = post.replies.slice(-3)
+            }
           })
           res.json(posts)
         })
