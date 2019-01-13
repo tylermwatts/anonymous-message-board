@@ -13,11 +13,16 @@ const bcrypt   = require('bcrypt');
 const mongoose = require('mongoose');
 
 const postSchema = mongoose.Schema({
+  board: {type: String, required: true},
   text: {type: String, required: true},
   created_on: {type: Date, required: true, default: new Date()},
   bumped_on: {type: Date, required: true, default: new Date()},
-  reported: {type: Boolean, 
+  reported: {type: Boolean, required: true, default: false},
+  delete_password: {type: String, required: true},
+  replies: {type: [], default: []},
 })
+
+const Post = mongoose.model('Post', postSchema);
 
 module.exports = function (app) {
   mongoose.connect(process.env.DB_URI, {useNewUrlParser: true});
@@ -26,7 +31,16 @@ module.exports = function (app) {
       .get()
   
       .post(function(req, res){
-        
+        var board = req.params.board;
+        var hashedPw = bcrypt.hash(req.body.
+        let newPost = new Post({
+          board,
+          text: req.body.text,
+          created_on: new Date(),
+          bumped_on: new Date(),
+          reported: false,
+          delete_password: 
+        })
       })
   
       .put()
