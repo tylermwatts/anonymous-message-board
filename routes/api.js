@@ -28,10 +28,16 @@ module.exports = function (app) {
   mongoose.connect(process.env.DB_URI, {useNewUrlParser: true});
   
   app.route('/api/threads/:board')
-      .get()
+      .get(function(req,res){
+        Post.find({board: req.params.board}, '-reported -delete_password', (err,posts)=>{
+          if (err) res.json({error: err});
+          res.send(posts);
+        })
+      
+      })
   
       .post(function(req, res){
-        var hashedPw = bcrypt.hash(req.body.delete_password, 12);
+        var hashedPw = bcrypt.hashSync(req.body.delete_password, 12);
         console.log(hashedPw);
         let newPost = new Post({
           board: req.params.board,
@@ -45,7 +51,7 @@ module.exports = function (app) {
         newPost.save(err=>{
           if (err) res.json({error: err})
         })
-        
+        res.redirect('/b/'+req.params.board)
       })
   
       .put()
