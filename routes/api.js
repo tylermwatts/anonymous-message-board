@@ -8,7 +8,10 @@
 
 'use strict';
 
-var expect = require('chai').expect;
+const expect   = require('chai').expect;
+const bcrypt   = require('bcrypt');
+
+const 
 
 module.exports = function (app) {
   
