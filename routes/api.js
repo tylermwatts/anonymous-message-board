@@ -31,16 +31,21 @@ module.exports = function (app) {
       .get()
   
       .post(function(req, res){
-        var board = req.params.board;
-        var hashedPw = bcrypt.hash(req.body.
+        var hashedPw = bcrypt.hash(req.body.delete_password, 12);
+        console.log(hashedPw);
         let newPost = new Post({
-          board,
+          board: req.params.board,
           text: req.body.text,
           created_on: new Date(),
           bumped_on: new Date(),
           reported: false,
-          delete_password: 
+          delete_password: hashedPw,
+          replies: []
         })
+        newPost.save(err=>{
+          if (err) res.json({error: err})
+        })
+        
       })
   
       .put()
