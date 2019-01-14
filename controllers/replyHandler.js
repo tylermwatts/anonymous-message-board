@@ -48,7 +48,7 @@ function ReplyHandler(){
       assert.equal(null,err);
       const db = client.db('fcc-training');
       db.collection(board)
-        .findOneAndUpdate({id_: new ObjectID(thread_id)},
+        .findOneAndUpdate({id_: new ObjectID(thread_id), "replies.$._id": new ObjectID(reply_id)},
                           {$set: {"replies.$.reported": true}})
       client.close();
     })
