@@ -17,7 +17,7 @@ module.exports = function (app) {
   app.route('/api/threads/:board')
       .get(postHandler.postList)
       .post(postHandler.newPost)
-      .delete()
+      .delete(postHandler.deletePost)
       .put();
     
   app.route('/api/replies/:board')

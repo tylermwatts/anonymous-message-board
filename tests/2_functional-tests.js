@@ -18,7 +18,7 @@ suite('Functional Tests', function() {
   suite('API ROUTING FOR /api/threads/:board', function() {
     
     suite('POST', function() {
-      test('posting a new thread to board "Test"', function(done){
+      test('posting a new thread to board "test"', function(done){
         chai.request(server)
           .post('/api/threads/test')
           .send({text: 'First test', delete_password: 'delete'})
@@ -30,7 +30,7 @@ suite('Functional Tests', function() {
     });
     
     suite('GET', function() {
-      
+      test('
     });
     
     suite('DELETE', function() {

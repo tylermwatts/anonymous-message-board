@@ -56,7 +56,7 @@ function PostHandler(){
       assert.equal(null,err);
       const db = client.db('fcc-training');
       db.collection(board)
-        .deleteOne({_id: new ObjectID(req.body.id), delete_password: req.body.delete_password}, (err,data)=>{
+        .deleteOne({_id: new ObjectID(req.body.thread_id), delete_password: req.body.delete_password}, (err,data)=>{
           if (err) res.json({error: err})
           if (!data) {
             res.send('incorrect password')
@@ -64,6 +64,20 @@ function PostHandler(){
             res.send('success')
           }
         })
+      client.close();
+    })
+  }
+  
+  this.reportPost = function(req,res){
+    let board = req.params.board;
+    mongo.connect(url, (err,client)=>{
+      assert.equal(null,err);
+      const db = client.db('fcc-training');
+      db.collection(board).findOne({_id: req.body.thread_id}, (err, post)=>{
+        assert.equal(null,err);
+        
+        
+      })
       client.close();
     })
   }
