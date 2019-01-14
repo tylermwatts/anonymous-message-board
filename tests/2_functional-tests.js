@@ -97,7 +97,9 @@ suite('Functional Tests', function() {
   suite('API ROUTING FOR /api/replies/:board', function() {
     
     suite('POST', function() {
-      
+      test('successfully post a reply to a thread', function(done){
+        
+      })
     });
     
     suite('GET', function() {
