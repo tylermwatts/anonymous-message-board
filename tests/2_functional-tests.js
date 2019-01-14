@@ -17,6 +17,7 @@ suite('Functional Tests', function() {
   
   var idToDelete;
   var idToReport;
+  var replyToReport;
 
   suite('API ROUTING FOR /api/threads/:board', function() {
     
@@ -97,7 +98,7 @@ suite('Functional Tests', function() {
   suite('API ROUTING FOR /api/replies/:board', function() {
     
     suite('POST', function() {
-      test('successfully post a reply to a thread', function(done){
+      test('POST a reply to a thread', function(done){
         // text, delete_password, & thread_id
         chai.request(server)
           .post('/api/replies/test')
@@ -110,7 +111,7 @@ suite('Functional Tests', function() {
     });
     
     suite('GET', function() {
-      test('get thread with all replies', function(done){
+      test('GET thread with all replies', function(done){
         chai.request(server)
           .get('/api/replies/test')
           .query({thread_id: idToReport})
@@ -118,13 +119,23 @@ suite('Functional Tests', function() {
             assert.equal(res.status,200);
             assert.isArray(res.body.replies);
             assert.equal(res.body.replies[0].text, 'first reply test');
+            replyToReport = res.body.replies[0]._id;
             done();
           })
       })
     });
     
     suite('PUT', function() {
-      
+      test('PUT thread_id & reply_id to report a thread, returned is "success"', function(done){
+        chai.request(server)
+          .put('/api/replies/test')
+          .send({thread_id: idToReport, reply_id: replyToReport})
+          .end((err,res)=>{
+            assert.equal(res.status, 200);
+            assert.equal(res.text, 'success');
+            done();
+          })
+      })
     });
     
     suite('DELETE', function() {

@@ -26,6 +26,6 @@ module.exports = function (app) {
       .get(replyHandler.getReplies)
       .post(replyHandler.postReply)
       .delete()
-      .put();
+      .put(replyHandler.reportReply);
 
 };

@@ -40,6 +40,20 @@ function ReplyHandler(){
     })
   }
   
+  this.reportReply = function(req,res){
+    let board = req.params.board;
+    let thread_id = req.params.thread_id;
+    let reply_id = req.params.reply_id;
+    mongo.connect(url, {useNewUrlParser: true}, (err,client)=>{
+      assert.equal(null,err);
+      const db = client.db('fcc-training');
+      db.collection(board)
+        .findAndModify({id_: new ObjectID(thread_id), "replies._id": new ObjectID()},
+                       {$set : {"replies.$.reported": true}})
+      client.close();
+    })
+  }
+  
 }
 
 module.exports = ReplyHandler;
