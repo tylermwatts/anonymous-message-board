@@ -54,7 +54,7 @@ suite('Functional Tests', function() {
           .send({thread_id: idToDelete, delete_password: 'wrong'})
           .end((err,res)=>{
             assert.equal(res.status, 200);
-            console.log(res.body)
+            assert.equal(res.text, 'incorrect password');
             done()
           })
       })

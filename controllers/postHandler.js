@@ -56,14 +56,17 @@ function PostHandler(){
       assert.equal(null,err);
       const db = client.db('fcc-training');
       db.collection(board)
-        .deleteOne({_id: new ObjectID(req.body.thread_id), delete_password: req.body.delete_password}, (err,data)=>{
-          if (err) res.json({error: err})
-          if (!data) {
-            res.send('incorrect password')
-          } else {
-            res.send('success')
-          }
-        })
+        .findOne({
+          _id: new ObjectID(req.body.thread_id),
+          delete_password: req.body.delete_password
+        }, (err,data)=>{
+            if (err) res.json({error: err})
+            if (!data) {
+              res.send('incorrect password')
+            } else {
+              res.send('success')
+            }
+          })
       client.close();
     })
   }
