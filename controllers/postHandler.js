@@ -56,9 +56,13 @@ function PostHandler(){
       assert.equal(null,err);
       const db = client.db('fcc-training');
       db.collection(board)
-        .deleteOne({_id: new ObjectID(req.body.id)}, (err,data)=>{
-          if (err) return res.json({error: err})
-        
+        .deleteOne({_id: new ObjectID(req.body.id), delete_password: req.body.delete_password}, (err,data)=>{
+          if (err) res.json({error: err})
+          if (!data) {
+            res.send('incorrect password')
+          } else {
+            res.send('success')
+          }
         })
       client.close();
     })
