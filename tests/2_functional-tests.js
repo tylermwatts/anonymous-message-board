@@ -16,14 +16,21 @@ chai.use(chaiHttp);
 suite('Functional Tests', function() {
   
   var idToDelete;
+  var idToReport;
 
   suite('API ROUTING FOR /api/threads/:board', function() {
     
     suite('POST', function() {
-      test('posting a new thread to board "test"', function(done){
+      test('POST two new threads to board "test"', function(done){
         chai.request(server)
           .post('/api/threads/test/')
           .send({text: 'First test', delete_password: 'delete'})
+          .end((err,res)=>{
+            assert.equal(res.status, 200);
+          })
+        chai.request(server)
+          .post('/api/threads/test')
+          .send({text: 'Report test', delete_password: 'report'})
           .end((err,res)=>{
             assert.equal(res.status, 200);
             done();
@@ -32,7 +39,7 @@ suite('Functional Tests', function() {
     });
     
     suite('GET', function() {
-      test('Get 10 most recent bumped threads with 3 most recent replies', function(done){
+      test('GET 10 most recent bumped threads with 3 most recent replies', function(done){
         chai.request(server)
           .get('/api/threads/test/')
           .end((err,res)=>{
@@ -48,7 +55,7 @@ suite('Functional Tests', function() {
     });
     
     suite('DELETE', function() {
-      test('delete with wrong password returns "incorrect password"',function(done){
+      test('DELETE with wrong password returns "incorrect password"',function(done){
         chai.request(server)
           .delete('/api/threads/test/')
           .send({thread_id: idToDelete, delete_password: 'wrong'})
@@ -58,7 +65,7 @@ suite('Functional Tests', function() {
             done()
           })
       })
-      test('delete with correct password returns "success"',function(done){
+      test('DELETE with correct password returns "success"',function(done){
         chai.request(server)
           .delete('/api/threads/test')
           .send({thread_id: idToDelete, delete_password: 'delete'})
@@ -71,7 +78,12 @@ suite('Functional Tests', function() {
     });
     
     suite('PUT', function() {
-      
+      test('PUT with "reported: true" returns "success"', function(done){
+        chai.request(server)
+          .put('/api/threads/test')
+          .send({thread_id: )
+          .end()
+      })
     });
     
 
