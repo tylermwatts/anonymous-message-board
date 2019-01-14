@@ -4,7 +4,7 @@ const url = process.env.DB_URI;
 const assert = require('assert');
 
 function ReplyHandler(){
-  const postReply = function(req, res){
+  this.postReply = function(req, res){
     let board = req.params.board;
     let thread_id = req.body.thread_id;
     let reply = {
@@ -15,7 +15,7 @@ function ReplyHandler(){
     }
     mongo.connect(url, {useNewUrlParser: true}, (err, client)=>{
       const db = client.db('fcc-training');
-      db.collection(board).findOne({_id: new ObjectID(thread_id)}, (err,post)=>{
+      db.collection(board).findOne({_id: new ObjectID(thread_id)}, {delete_password: 0, reported: 0}, (err,post)=>{
         assert.equal(null,err);
         post.replies.push(reply);
       })
@@ -23,6 +23,19 @@ function ReplyHandler(){
     })
     res.redirect('/b/'+board+'/'+thread_id+'/');
   }
+  
+  this.getReplies = function(req,res){
+    let board = req.params.board;
+    let thread_id = req.query.thread_id;
+    mongo.connect(url, {useNewUrlParser: true}, (err,client)=>{
+      const db = client.db('fcc-training');
+      db.collection(board).findOne({_id: new ObjectID(thread_id)}, {delete_password: 0, reported: 0}, (err,post)=>{
+        assert.equal(null, err);
+        
+      })
+    })
+  }
+  
 }
 
 module.exports = ReplyHandler;
