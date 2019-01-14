@@ -44,6 +44,7 @@ suite('Functional Tests', function() {
         chai.request(server)
           .get('/api/threads/test/')
           .end((err,res)=>{
+            console.log(res.body)
             assert.equal(res.status, 200);
             assert.isArray(res.body);
             assert.isAtMost(res.body.length, 10);
