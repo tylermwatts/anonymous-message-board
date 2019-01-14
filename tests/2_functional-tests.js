@@ -14,13 +14,15 @@ var server = require('../server');
 chai.use(chaiHttp);
 
 suite('Functional Tests', function() {
+  
+  var idToDelete;
 
   suite('API ROUTING FOR /api/threads/:board', function() {
     
     suite('POST', function() {
       test('posting a new thread to board "test"', function(done){
         chai.request(server)
-          .post('/api/threads/test')
+          .post('/api/threads/test/')
           .send({text: 'First test', delete_password: 'delete'})
           .end((err,res)=>{
             assert.equal(res.status, 200);
@@ -30,11 +32,28 @@ suite('Functional Tests', function() {
     });
     
     suite('GET', function() {
-      test('
+      test('Get 10 most recent bumped threads with 3 most recent replies', function(done){
+        chai.request(server)
+          .get('/api/threads/test/')
+          .end((err,res)=>{
+            assert.equal(res.status, 200);
+            assert.isArray(res.body);
+            assert.isAtMost(res.body, 10);
+            assert.isArray(res.body[0].replies);
+            assert.isAtMost(res.body[0].replies.length, 3);
+            idToDelete = res.body[0]._id;
+            done();
+          })
+      })
     });
     
     suite('DELETE', function() {
-      
+      test('delete with wrong password returns "incorrect password"',function(done){
+        chai.request(server)
+          .delete('/api/threads/test/')
+          .send()
+          .end()
+      })
     });
     
     suite('PUT', function() {
