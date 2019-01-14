@@ -110,7 +110,17 @@ suite('Functional Tests', function() {
     });
     
     suite('GET', function() {
-      
+      test('get thread with all replies', function(done){
+        chai.request(server)
+          .get('/api/replies/test')
+          .query({thread_id: idToReport})
+          .end((err,res)=>{
+            assert.equal(res.status,200);
+            assert.isArray(res.body);
+            assert.equal(res.body[0].text, 'first reply test');
+            done();
+          })
+      })
     });
     
     suite('PUT', function() {

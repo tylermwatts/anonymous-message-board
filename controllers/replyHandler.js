@@ -15,9 +15,10 @@ function ReplyHandler(){
     }
     mongo.connect(url, {useNewUrlParser: true}, (err, client)=>{
       const db = client.db('fcc-training');
-      db.collection(board).findOne({_id: new ObjectID(thread_id)}, {delete_password: 0, reported: 0}, (err,post)=>{
+      db.collection(board).findAndModify({_id: new ObjectID(thread_id)}, {delete_password: 0, reported: 0}, (err,post)=>{
         assert.equal(null,err);
         post.replies.push(reply);
+        post.bumped_on = new Date();
       })
       client.close();
     })
@@ -32,12 +33,14 @@ function ReplyHandler(){
       db.collection(board).findOne({_id: new ObjectID(thread_id)}, {delete_password: 0, reported: 0}, (err,post)=>{
         assert.equal(null, err);
         //_id, text, & created_on
+        console.log(post.replies)
         post.replies.sort((a,b)=>{
           a.created_on - b.created_on
         })
         let allReplies = post.replies.map(r=>{
           ({_id: new ObjectID(r._id), text: r.text, created_on: r.created_on})
         })
+        console.log(allReplies)
         res.json(allReplies);
       })
       client.close();
