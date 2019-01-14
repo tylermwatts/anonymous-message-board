@@ -15,7 +15,7 @@ function PostHandler(){
       delete_password: req.body.delete_password,
       replies: []
     }
-    mongo.connect(url, (err,client)=>{
+    mongo.connect(url, {useNewUrlParser: true}, (err,client)=>{
       assert.equal(null, err);
       const db = client.db('fcc-training');
       db.collection(board).insertOne(post)
@@ -26,7 +26,7 @@ function PostHandler(){
   
   this.postList = function(req,res){
     let board = req.params.board;
-    mongo.connect(url, (err,client)=>{
+    mongo.connect(url, {useNewUrlParser: true}, (err,client)=>{
       assert.equal(null,err);
       const db = client.db('fcc-training');
       db.collection(board)
@@ -52,7 +52,7 @@ function PostHandler(){
   
   this.deletePost = function(req,res){
     let board = req.params.board;
-    mongo.connect(url, (err,client)=>{
+    mongo.connect(url, {useNewUrlParser: true}, (err,client)=>{
       assert.equal(null,err);
       const db = client.db('fcc-training');
       db.collection(board)

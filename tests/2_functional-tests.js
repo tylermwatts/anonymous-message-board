@@ -38,7 +38,7 @@ suite('Functional Tests', function() {
           .end((err,res)=>{
             assert.equal(res.status, 200);
             assert.isArray(res.body);
-            assert.isAtMost(res.body, 10);
+            assert.isAtMost(res.body.length, 10);
             assert.isArray(res.body[0].replies);
             assert.isAtMost(res.body[0].replies.length, 3);
             idToDelete = res.body[0]._id;
@@ -51,8 +51,12 @@ suite('Functional Tests', function() {
       test('delete with wrong password returns "incorrect password"',function(done){
         chai.request(server)
           .delete('/api/threads/test/')
-          .send()
-          .end()
+          .send({thread_id: idToDelete, delete_password: 'wrong'})
+          .end((err,res)=>{
+            assert.equal(res.status, 200);
+            console.log(res.body)
+            done()
+          })
       })
     });
     
