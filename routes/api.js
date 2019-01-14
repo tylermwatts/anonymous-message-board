@@ -17,13 +17,13 @@ module.exports = function (app) {
   app.route('/api/threads/:board')
       .get(postHandler.postList)
       .post(postHandler.newPost)
-      .put()
-      .delete();
+      .delete()
+      .put();
     
   app.route('/api/replies/:board')
       .get()
       .post()
-      .put()
-      .delete();
+      .delete()
+      .put();
 
 };
