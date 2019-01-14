@@ -15,10 +15,10 @@ module.exports = function (app) {
   const postHandler = new PostHandler();
   
   app.route('/api/threads/:board')
-      .get(postHandler.postList)
+      .get(postHandler.getPosts)
       .post(postHandler.newPost)
       .delete(postHandler.deletePost)
-      .put();
+      .put(postHandler.reportPost);
     
   app.route('/api/replies/:board')
       .get()

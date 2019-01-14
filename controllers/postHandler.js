@@ -24,7 +24,7 @@ function PostHandler(){
     res.redirect('/b/'+board+'/');
   }
   
-  this.postList = function(req,res){
+  this.getPosts = function(req,res){
     let board = req.params.board;
     mongo.connect(url, {useNewUrlParser: true}, (err,client)=>{
       assert.equal(null,err);
@@ -78,8 +78,12 @@ function PostHandler(){
       const db = client.db('fcc-training');
       db.collection(board).findOne({_id: req.body.thread_id}, (err, post)=>{
         assert.equal(null,err);
-        
-        
+        if (!post){
+          return res.send('invalid thread_id');
+        } else {
+          post.reported = true;
+          res.send('success');
+        }
       })
       client.close();
     })

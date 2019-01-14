@@ -49,6 +49,7 @@ suite('Functional Tests', function() {
             assert.isArray(res.body[0].replies);
             assert.isAtMost(res.body[0].replies.length, 3);
             idToDelete = res.body[0]._id;
+            idToReport = res.body[1]._id;
             done();
           })
       })
@@ -78,11 +79,15 @@ suite('Functional Tests', function() {
     });
     
     suite('PUT', function() {
-      test('PUT with "reported: true" returns "success"', function(done){
+      test('PUT with thread_id to report thread returns "success"', function(done){
         chai.request(server)
           .put('/api/threads/test')
-          .send({thread_id: )
-          .end()
+          .send({thread_id: idToReport})
+          .end((err,res)=>{
+            assert.equal(res.status, 200);
+            assert.equal(res.text, 'success');
+            done();
+          })
       })
     });
     
