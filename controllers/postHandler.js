@@ -46,8 +46,24 @@ function PostHandler(){
           })
           res.json(posts)
         })
+      client.close();
     })
   }
+  
+  this.deletePost = function(req,res){
+    let board = req.params.board;
+    mongo.connect(url, (err,client)=>{
+      assert.equal(null,err);
+      const db = client.db('fcc-training');
+      db.collection(board)
+        .deleteOne({_id: new ObjectID(req.body.id)}, (err,data)=>{
+          if (err) return res.json({error: err})
+        
+        })
+      client.close();
+    })
+  }
+  
 }
 
 module.exports = PostHandler;
