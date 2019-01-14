@@ -98,7 +98,14 @@ suite('Functional Tests', function() {
     
     suite('POST', function() {
       test('successfully post a reply to a thread', function(done){
-        
+        // text, delete_password, & thread_id
+        chai.request(server)
+          .post('/api/replies/test')
+          .send({text: 'first reply test', delete_password: 'deletereply', thread_id: idToReport})
+          .end((err,res)=>{
+            assert.equal(res.status, 200);
+            done();
+          })
       })
     });
     
