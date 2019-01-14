@@ -116,8 +116,8 @@ suite('Functional Tests', function() {
           .query({thread_id: idToReport})
           .end((err,res)=>{
             assert.equal(res.status,200);
-            assert.isArray(res.body);
-            assert.equal(res.body[0].text, 'first reply test');
+            assert.isArray(res.body.replies);
+            assert.equal(res.body.replies[0].text, 'first reply test');
             done();
           })
       })
