@@ -73,10 +73,10 @@ function PostHandler(){
   
   this.reportPost = function(req,res){
     let board = req.params.board;
-    mongo.connect(url, (err,client)=>{
+    mongo.connect(url, {useNewUrlParser: true}, (err,client)=>{
       assert.equal(null,err);
       const db = client.db('fcc-training');
-      db.collection(board).findOne({_id: req.body.thread_id}, (err, post)=>{
+      db.collection(board).findOne({_id: new ObjectID(req.body.thread_id)}, (err, post)=>{
         assert.equal(null,err);
         if (!post){
           return res.send('invalid thread_id');
