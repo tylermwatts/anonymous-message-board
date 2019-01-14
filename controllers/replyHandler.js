@@ -31,8 +31,16 @@ function ReplyHandler(){
       const db = client.db('fcc-training');
       db.collection(board).findOne({_id: new ObjectID(thread_id)}, {delete_password: 0, reported: 0}, (err,post)=>{
         assert.equal(null, err);
-        
+        //_id, text, & created_on
+        post.replies.sort((a,b)=>{
+          a.created_on - b.created_on
+        })
+        let allReplies = post.replies.map(r=>{
+          ({_id: new ObjectID(r._id), text: r.text, created_on: r.created_on})
+        })
+        res.json(allReplies);
       })
+      client.close();
     })
   }
   
