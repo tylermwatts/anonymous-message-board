@@ -76,7 +76,7 @@ function PostHandler(){
     mongo.connect(url, {useNewUrlParser: true}, (err,client)=>{
       assert.equal(null,err);
       const db = client.db('fcc-training');
-      db.collection(board).findOneAndUpdate({_id: new ObjectID(req.body.thread_id)})
+      db.collection(board).findOneAndUpdate({_id: new ObjectID(req.body.thread_id)}, {$set: {reported: true}})
       client.close();
     })
   }
