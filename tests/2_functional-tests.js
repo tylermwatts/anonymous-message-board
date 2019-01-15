@@ -149,7 +149,16 @@ suite('Functional Tests', function() {
             done();
           })
       })
-      test('DELETE reply passing correct password returns "success"', function(done){})
+      test('DELETE reply passing correct password returns "success"', function(done){
+        chai.request(server)
+          .delete('/api/replies/test')
+          .send({thread_id: idToReport, reply_id: replyToReport, delete_password: 'deletereply'})
+          .end((err,res)=>{
+            assert.equal(res.status, 200);
+            assert.equal(res.text, 'success');
+            done();
+          })
+      })
     });
     
   });

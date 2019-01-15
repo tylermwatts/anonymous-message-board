@@ -59,7 +59,13 @@ function PostHandler(){
         .findOneAndDelete({
           _id: new ObjectID(req.body.thread_id),
           delete_password: req.body.delete_password
-        })
+        }).then(doc=>{
+            if (!doc){
+              res.send('incorrect password')
+            } else {
+              res.send('success');
+            }
+          })
       client.close();
     })
   }

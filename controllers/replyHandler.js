@@ -64,7 +64,16 @@ function ReplyHandler(){
     mongo.connect(url, {useNewUrlParser: true}, (err,client)=>{
       assert.equal(null,err);
       const db = client.db('fcc-training');
-      db.collection(board).findOneAndUpdate({_id: new ObjectID(thread_id)})
+      db.collection(board)
+        .findOneAndDelete({
+        "replies.$._id": new ObjectID(reply_id)
+      }).then(doc=>{
+          if (!doc){
+            res.send('incorrect password');
+          } else {
+            res.send('success');
+          }
+        })
     })
   }
   
