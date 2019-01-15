@@ -76,15 +76,7 @@ function PostHandler(){
     mongo.connect(url, {useNewUrlParser: true}, (err,client)=>{
       assert.equal(null,err);
       const db = client.db('fcc-training');
-      db.collection(board).findOne({_id: new ObjectID(req.body.thread_id)}, (err, post)=>{
-        assert.equal(null,err);
-        if (!post){
-          return res.send('invalid thread_id');
-        } else {
-          post.reported = true;
-          res.send('success');
-        }
-      })
+      db.collection(board).findOneAndUpdate({_id: new ObjectID(req.body.thread_id)})
       client.close();
     })
   }
