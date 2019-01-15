@@ -65,9 +65,11 @@ function ReplyHandler(){
       assert.equal(null,err);
       const db = client.db('fcc-training');
       db.collection(board)
-        .findOneAndUpdate({
-        replies: { $elemMatch: {_id: new ObjectID(reply_id)} }},
-                          {}).then(doc=>{
+        .findOneAndUpdate({_id: new ObjectID(thread_id), delete_password: pw},
+                          { $set: {"replies.$[ind].text": '[deleted]'} },
+                          {arrayFilters: [{"ind._id": new ObjectID(reply_id)}]})
+        .then(doc=>{
+          console.log(doc.value);
           if (doc.value === null){
             res.send('incorrect password');
           } else {
