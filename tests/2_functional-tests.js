@@ -44,7 +44,6 @@ suite('Functional Tests', function() {
         chai.request(server)
           .get('/api/threads/test/')
           .end((err,res)=>{
-            console.log(res.body)
             assert.equal(res.status, 200);
             assert.isArray(res.body);
             assert.isAtMost(res.body.length, 10);
@@ -57,28 +56,28 @@ suite('Functional Tests', function() {
       })
     });
     
-    suite('DELETE', function() {
-      test('DELETE with wrong password returns "incorrect password"',function(done){
-        chai.request(server)
-          .delete('/api/threads/test/')
-          .send({thread_id: idToDelete, delete_password: 'wrong'})
-          .end((err,res)=>{
-            assert.equal(res.status, 200);
-            assert.equal(res.text, 'incorrect password');
-            done()
-          })
-      })
-      test('DELETE with correct password returns "success"',function(done){
-        chai.request(server)
-          .delete('/api/threads/test')
-          .send({thread_id: idToDelete, delete_password: 'delete'})
-          .end((err,res)=>{
-            assert.equal(res.status, 200);
-            assert.equal(res.text, 'success');
-            done();
-          })
-      })
-    });
+    // suite('DELETE', function() {
+    //   test('DELETE with wrong password returns "incorrect password"',function(done){
+    //     chai.request(server)
+    //       .delete('/api/threads/test/')
+    //       .send({thread_id: idToDelete, delete_password: 'wrong'})
+    //       .end((err,res)=>{
+    //         assert.equal(res.status, 200);
+    //         assert.equal(res.text, 'incorrect password');
+    //         done()
+    //       })
+    //   })
+    //   test('DELETE with correct password returns "success"',function(done){
+    //     chai.request(server)
+    //       .delete('/api/threads/test')
+    //       .send({thread_id: idToDelete, delete_password: 'delete'})
+    //       .end((err,res)=>{
+    //         assert.equal(res.status, 200);
+    //         assert.equal(res.text, 'success');
+    //         done();
+    //       })
+    //   })
+    // });
     
     suite('PUT', function() {
       test('PUT with thread_id to report thread returns "success"', function(done){

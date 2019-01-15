@@ -79,6 +79,7 @@ function PostHandler(){
       db.collection(board).findOneAndUpdate({_id: new ObjectID(req.body.thread_id)}, {$set: {reported: true}})
       client.close();
     })
+    res.send('success');
   }
   
 }
