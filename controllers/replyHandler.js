@@ -68,7 +68,7 @@ function ReplyHandler(){
       db.collection(board)
         .findOneAndUpdate({_id: new ObjectID(thread_id)},
                           { $set: {"replies.$[ind].text": '[deleted]'} },
-                          {arrayFilters: [{"ind._id": new ObjectID(reply_id)}, {"ind.delete_password": pw}]})
+                          {arrayFilters: [{"ind.delete_password": pw, "ind._id": reply_id}]})
         .then(doc=>{
           console.log(doc);
           if (doc.value === null){
