@@ -25,13 +25,13 @@ suite('Functional Tests', function() {
       test('POST two new threads to board "test"', function(done){
         chai.request(server)
           .post('/api/threads/test/')
-          .send({text: 'test text', delete_password: 'delete'})
+          .send({text: 'test text1', delete_password: 'delete'})
           .end((err,res)=>{
             assert.equal(res.status, 200);
           })
         chai.request(server)
           .post('/api/threads/test')
-          .send({text: 'test text', delete_password: 'delete'})
+          .send({text: 'test text2', delete_password: 'delete'})
           .end((err,res)=>{
             assert.equal(res.status, 200);
             done();

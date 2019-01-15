@@ -42,14 +42,16 @@ function ReplyHandler(){
   
   this.reportReply = function(req,res){
     let board = req.params.board;
-    let thread_id = req.params.thread_id;
-    let reply_id = req.params.reply_id;
+    let thread_id = req.body.thread_id;
+    let reply_id = req.body.reply_id;
+    console.log(reply_id)
     mongo.connect(url, {useNewUrlParser: true}, (err,client)=>{
       assert.equal(null,err);
       const db = client.db('fcc-training');
       db.collection(board)
-        .find({_id: new ObjectID(thread_id)},
-              { $set : { "replies.$[ind].reported": true } })
+        .findOneAndUpdate({_id: new ObjectID(thread_id)},
+                          { $set : { "replies.$[ind].reported": true } },
+                          {arrayFilters: [{"ind._id": new ObjectID(reply_id)}]})
       client.close();
     })
     res.send('success');
