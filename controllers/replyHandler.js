@@ -44,7 +44,6 @@ function ReplyHandler(){
     let board = req.params.board;
     let thread_id = req.body.thread_id;
     let reply_id = req.body.reply_id;
-    console.log(reply_id)
     mongo.connect(url, {useNewUrlParser: true}, (err,client)=>{
       assert.equal(null,err);
       const db = client.db('fcc-training');
@@ -55,6 +54,18 @@ function ReplyHandler(){
       client.close();
     })
     res.send('success');
+  }
+  
+  this.deleteReply = function(req,res){
+    let board = req.params.board;
+    let thread_id = req.body.thread_id;
+    let reply_id = req.body.reply_id;
+    let pw = req.body.delete_password;
+    mongo.connect(url, {useNewUrlParser: true}, (err,client)=>{
+      assert.equal(null,err);
+      const db = client.db('fcc-training');
+      db.collection(board).findOneAndUpdate({_id: new ObjectID(thread_id)})
+    })
   }
   
 }
