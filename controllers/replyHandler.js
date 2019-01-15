@@ -61,16 +61,13 @@ function ReplyHandler(){
     let thread_id = req.body.thread_id;
     let reply_id = req.body.reply_id;
     let pw = req.body.delete_password;
-    console.log(board, thread_id, reply_id, pw);
     mongo.connect(url, {useNewUrlParser: true}, (err,client)=>{
       assert.equal(null,err);
       const db = client.db('fcc-training');
       db.collection(board)
-        .findOneAndUpdate({_id: new ObjectID(thread_id)},
-                          { $set: {"replies.$[ind].text": '[deleted]'} },
-                          {arrayFilters: [{"ind.delete_password": pw, "ind._id": reply_id}]})
+        .findOneAndUpdate({_id: new ObjectID(thread_id), replies: { $elemMatch: {_id: new ObjectID(reply_id), delete_password: pw}}},
+                          { $set: {"replies.$.text": '[deleted]'} })
         .then(doc=>{
-          console.log(doc);
           if (doc.value === null){
             res.send('incorrect password');
           } else {
