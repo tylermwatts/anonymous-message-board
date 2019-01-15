@@ -60,7 +60,7 @@ function PostHandler(){
           _id: new ObjectID(req.body.thread_id),
           delete_password: req.body.delete_password
         }).then(doc=>{
-            if (!doc){
+            if (doc.value === null){
               res.send('incorrect password')
             } else {
               res.send('success');
